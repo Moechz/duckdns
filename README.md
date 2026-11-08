@@ -22,6 +22,14 @@ A four-file TOS Docker application archive (`duckdnsdocker.tar.gz`):
 - `duckdnsdocker.svg` — application icon (12.1 KB; the DuckDNS duck mark)
 - `docker-compose.yml` — one service, image `linuxserver/duckdns:aad9dc1f-ls96`
 
+Two packages are published for this version — one per architecture the TOS store
+accepts. Both contain the same four files; only `config.ini.platform` differs.
+
+| Architecture | Package | Size | SHA-256 |
+|---|---|---|---|
+| x86_64 | `duckdnsdocker_x86_64.tar.gz` | 21270 B | `f93a9aba16e313e0a42ed192ab32f946ad9edbac22e3281a01aee4e88555739c` |
+| aarch64 | `duckdnsdocker_aarch64.tar.gz` | 21271 B | `390aaa2cd5d81e278e51542f032835a104c076a43b6a8fc2c6d0651eee34cd05` |
+
 ## How it works
 
 | | |
@@ -90,10 +98,26 @@ written.
 Copying the `config` folder is a complete backup. The token in
 `duckdns.conf` is a secret: the folder is readable only by the application user.
 
+## Architectures
+
+The TOS store accepts **one package per architecture**, and `config.ini.platform`
+must match it character for character. Both packages are produced from the same
+sources in one run:
+
+```bash
+scripts/build-dual.sh             # aarch64 + x86_64, both suffix-named + .sha256
+```
+
+The x86_64 package was verified with the full on-device E2E (17 checks, including
+the official installer, non-root uid, volume ownership, restart and reinstall).
+The aarch64 package passes the official `TOSAppSelfTestingTool -c` check and the
+developer platform's automated validation; no ARM host with DockerEngine was
+available for a container E2E, so that is declared here rather than claimed.
+
 ## Build
 
 ```bash
-scripts/build.sh                  # -> out/duckdnsdocker.tar.gz + .sha256
+scripts/build.sh                  # one architecture -> out/duckdnsdocker.tar.gz + .sha256
 scripts/build.sh 2026.11.2-2      # packaging iteration bump
 scripts/build.sh 2026.11.2-1 aarch64
 ```
@@ -130,12 +154,15 @@ its immutable tag and is never `:latest`.
 ## Store submission
 
 1. Public GitHub repo (code + README only).
-2. Release **tag `v2026.11.2-1`**, assets `duckdnsdocker.tar.gz` +
-   `duckdnsdocker.tar.gz.sha256` (Docker asset naming: `<app_id>.tar.gz`, **no
-   platform suffix**).
-3. Developer platform → Add Application: ID `duckdnsdocker`, package type Docker,
-   repository URL, architecture `x86_64`.
-4. Version Management → Add Version `2026.11.2-1` → automated validation → review.
+2. Release **tag `v2026.11.2-1`**, assets `duckdnsdocker_x86_64.tar.gz` and
+   `duckdnsdocker_aarch64.tar.gz` (each with a `.sha256`). The unsuffixed
+   `duckdnsdocker.tar.gz` is the x86_64 package kept for the already-submitted
+   x86_64 version (identical bytes).
+3. Developer platform → two App records with the same ID `duckdnsdocker`
+   (package type Docker, same repository URL): architecture `x86_64` and
+   architecture `aarch64`. Each record gets its own version and asset URL.
+4. Version Management → Add Version `2026.11.2-1` for **each** record → automated
+   validation → review.
 
 ## License / branding
 

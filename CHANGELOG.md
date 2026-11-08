@@ -25,3 +25,11 @@ All notable user-visible changes to the DuckDNS TOS application package.
 - 23-language store metadata (English, Simplified Chinese and Traditional
   Chinese translated; the remaining languages fall back to English, which the
   official guide allows).
+
+### Architectures
+- **Dual-architecture release**: `duckdnsdocker_x86_64.tar.gz` (21270 B,
+  `f93a9aba…`) and `duckdnsdocker_aarch64.tar.gz` (21271 B, `390aaa2c…`), built
+  from the same sources by `scripts/build-dual.sh` and published in the same
+  GitHub Release. The x86_64 package was verified with the full on-device E2E
+  (17/17); the aarch64 package passes the official check and the developer
+  platform's automated validation, with no ARM host available for a container E2E.
