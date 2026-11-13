@@ -2,6 +2,34 @@
 
 All notable user-visible changes to the DuckDNS TOS application package.
 
+## 2026.11.2-2 — 2026-11-14
+
+### Changed
+- Added `PRIVACY.md` and linked it from the package `help` field: the app sends
+  the subdomain, token and detected public IP to duckdns.org, and (in the
+  optional `ipv4`/`ipv6`/`both` modes) a DNS query to Cloudflare; no telemetry.
+- The `important` text now states the DuckDNS API data flow, so the declaration
+  matches the actual behaviour.
+- Documented user data rights (view/edit/delete the config folder, revoke the
+  token at DuckDNS) and the uninstall/data-removal behaviour.
+
+### Fixed (review remediation)
+- **C3**: privacy policy added.
+- **C4**: the policy covers data, purpose, third parties and retention.
+- **C5**: the policy is public and linked from `help`.
+- **C6**: data collection now matches the declaration.
+- **C7**: user data rights documented.
+- **C8**: DuckDNS and Cloudflare as third-party destinations disclosed.
+
+### Architectures
+- x86_64: `duckdnsdocker_x86_64.tar.gz` (21323 B,
+  `2c76c0bbb5a8dd08631ef0a438d9fea8dd5398327d51390fee09dad29cd69c8b`)
+- aarch64: `duckdnsdocker_aarch64.tar.gz` (21323 B,
+  `caf42244bd0aa1abf66f1e13ffccad005c1a4a0ee06a2d98c11dd8bb0ed5305f`)
+- x86_64 full on-device E2E: 17/17 (official installer, uid 1000, page,
+  broken-config fallback, restart, reinstall keeps data); aarch64 passes the
+  official check and the platform validation.
+
 ## 2026.11.2-1 — 2026-11-08
 
 ### Added

@@ -89,8 +89,10 @@ secs = re.findall(r"^\[([a-z]{2}-[a-z]{2})\]$", lang, re.M)
 chk(REQUIRED_LANGS.issubset(set(secs)),
     f"lang missing required languages: {sorted(REQUIRED_LANGS - set(secs))}")
 chk(len(secs) == len(set(secs)), "lang has duplicate language sections")
+_parts = re.split(r"(?m)^\[([a-z]{2}-[a-z]{2})\]$", lang)
+_bodies = {_parts[i]: _parts[i + 1] for i in range(1, len(_parts) - 1, 2)}
 for s in secs:
-    body = lang.split(f"[{s}]", 1)[1].split("[", 1)[0]
+    body = _bodies[s]
     for key in ("name", "auth", "version", "descript", "release_note", "important"):
         mm = re.search(rf'{key}\s*=\s*"(.+)"', body)
         chk(mm is not None and mm.group(1).strip(), f"[{s}] {key} empty or missing")

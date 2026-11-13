@@ -27,8 +27,8 @@ accepts. Both contain the same four files; only `config.ini.platform` differs.
 
 | Architecture | Package | Size | SHA-256 |
 |---|---|---|---|
-| x86_64 | `duckdnsdocker_x86_64.tar.gz` | 21270 B | `f93a9aba16e313e0a42ed192ab32f946ad9edbac22e3281a01aee4e88555739c` |
-| aarch64 | `duckdnsdocker_aarch64.tar.gz` | 21271 B | `390aaa2cd5d81e278e51542f032835a104c076a43b6a8fc2c6d0651eee34cd05` |
+| x86_64 | `duckdnsdocker_x86_64.tar.gz` | 21323 B | `2c76c0bbb5a8dd08631ef0a438d9fea8dd5398327d51390fee09dad29cd69c8b` |
+| aarch64 | `duckdnsdocker_aarch64.tar.gz` | 21323 B | `caf42244bd0aa1abf66f1e13ffccad005c1a4a0ee06a2d98c11dd8bb0ed5305f` |
 
 ## How it works
 
@@ -57,6 +57,13 @@ updater output stay in `/config/duckdns.log`.
    The stored token is never echoed back into the form.
 5. For access from outside your network, forward the ports you need on the
    router, or use a tunnel — DuckDNS only updates the DNS record.
+
+## Privacy
+
+The app sends the subdomain, token and detected public IP to duckdns.org to
+update the record, and in the optional `ipv4`/`ipv6`/`both` modes a DNS query to
+Cloudflare (`1.1.1.1` / `2606:4700:4700::1111`) to discover the address. It sends
+no telemetry. See [PRIVACY.md](PRIVACY.md); the package `help` field points to it.
 
 ## Design highlights
 
@@ -119,7 +126,7 @@ available for a container E2E, so that is declared here rather than claimed.
 ```bash
 scripts/build.sh                  # one architecture -> out/duckdnsdocker.tar.gz + .sha256
 scripts/build.sh 2026.11.2-2      # packaging iteration bump
-scripts/build.sh 2026.11.2-1 aarch64
+scripts/build.sh 2026.11.2-2 aarch64
 ```
 
 The build stages the four files, substitutes the version/platform placeholders,
@@ -154,14 +161,14 @@ its immutable tag and is never `:latest`.
 ## Store submission
 
 1. Public GitHub repo (code + README only).
-2. Release **tag `v2026.11.2-1`**, assets `duckdnsdocker_x86_64.tar.gz` and
+2. Release **tag `v2026.11.2-2`**, assets `duckdnsdocker_x86_64.tar.gz` and
    `duckdnsdocker_aarch64.tar.gz` (each with a `.sha256`). The unsuffixed
    `duckdnsdocker.tar.gz` is the x86_64 package kept for the already-submitted
    x86_64 version (identical bytes).
 3. Developer platform → two App records with the same ID `duckdnsdocker`
    (package type Docker, same repository URL): architecture `x86_64` and
    architecture `aarch64`. Each record gets its own version and asset URL.
-4. Version Management → Add Version `2026.11.2-1` for **each** record → automated
+4. Version Management → Add Version `2026.11.2-2` for **each** record → automated
    validation → review.
 
 ## License / branding
