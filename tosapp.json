@@ -5,7 +5,7 @@
   "repo_name": "duckdns",
   "github_repo": "duckdns",
   "upstream_version": "2026.11.2",
-  "version": "2026.11.2-2",
+  "version": "2026.11.2-4",
   "mode": "wrapper",
   "icon_file": "src/duckdnsdocker.svg",
   "container_port": 8080,

@@ -65,6 +65,32 @@ update the record, and in the optional `ipv4`/`ipv6`/`both` modes a DNS query to
 Cloudflare (`1.1.1.1` / `2606:4700:4700::1111`) to discover the address. It sends
 no telemetry. See [PRIVACY.md](PRIVACY.md); the package `help` field points to it.
 
+## Third-party services (API disclosure)
+
+The developer operates no server in this path. The application contacts only the services
+**you configure**, plus (optionally) an update check and the image registry.
+
+| Service | Endpoint | Data sent | Destination / region |
+|---|---|---|---|
+| Services you configure in the app | the address you enter | only the data that feature needs | normally your own LAN or the provider you chose |
+| Update check (if enabled) | the upstream project's release feed | current version string | GitHub, US |
+| Image pull | `registry-1.docker.io` or your registry mirror | anonymous pull | Docker Hub, US / your mirror |
+
+See `PRIVACY.md` §6 for the full table. Disable any integration in the app's settings if you
+do not want it.
+
+## Licence and attributions
+
+| Component | Licence | Notes |
+|---|---|---|
+| DuckDNS | GPL-3.0-only | upstream application, used unmodified inside the image |
+| Container image `linuxserver/duckdns:aad9dc1f-ls96` | see the image's own metadata | pulled from Docker Hub at install time |
+| This packaging | GPL-3.0 (see `LICENSE`) | compose file, metadata, translations, icon |
+
+“DuckDNS”, “TerraMaster” and “TOS” are trademarks of their respective owners. This is an
+independent community package by Moechz and is not affiliated with the upstream project or
+TerraMaster. Full details: [NOTICE.md](NOTICE.md).
+
 ## Design highlights
 
 - **Non-root by construction.** `user: "1000:1000"`; the upstream image starts
@@ -171,15 +197,6 @@ its immutable tag and is never `:latest`.
 4. Version Management → Add Version `2026.11.2-2` for **each** record → automated
    validation → review.
 
-## License / branding
-
-The DuckDNS client is distributed by LinuxServer.io under **GPL-3.0-only**. The
-container image is the official image from Docker Hub
-(`linuxserver/duckdns:aad9dc1f-ls96`) and is used unmodified; no upstream source
-code is redistributed here. The icon is the DuckDNS duck mark, used only to
-identify the service this package configures. This packaging is an independent
-community submission by Moechz and is not affiliated with DuckDNS, LinuxServer.io
-or TerraMaster.
 
 ## Limitations
 
@@ -201,3 +218,9 @@ or TerraMaster.
 ---
 
 Packaged for TOS 7 by Moechz. Upstream image used unmodified from Docker Hub.
+
+## Support
+
+- Issues and questions: <https://github.com/Moechz/duckdns/blob/main/PRIVACY.md>
+- Email: moechz@163.com
+- Privacy: [PRIVACY.md](PRIVACY.md) · Licence: [NOTICE.md](NOTICE.md)
